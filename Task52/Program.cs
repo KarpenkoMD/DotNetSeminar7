@@ -34,6 +34,8 @@
             colSize = Convert.ToInt32(Console.ReadLine());
             break;
         }
+        //else if (enteredSymbol == String.Empty)
+
     } while (true);
 
     return (rowSize, colSize);
@@ -51,11 +53,6 @@ void Print2DArray(int[,] ArrayToPrint)
         Console.Write($"[{i}]\t", i);
         for (int j = 0; j < ArrayToPrint.GetLength(1); j++)
         {
-            if (i == rowColoredElement
-                && j == colColoredElement)
-            {
-                Console.BackgroundColor = ConsoleColor.Green;
-            }
             if (ArrayToPrint[i, j] < 0)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -66,4 +63,40 @@ void Print2DArray(int[,] ArrayToPrint)
         Console.WriteLine();
     }
 }
-static void Fill2DArray(int[,] ArrayToFill, int deviation = 10)
+void Fill2DArray(int[,] ArrayToFill, int deviation = 10)
+{
+    for (int i = 0; i < ArrayToFill.GetLength(0); i++)
+    {
+        for (int j = 0; j < ArrayToFill.GetLength(1); j++)
+        {
+            ArrayToFill[i, j] = new Random().Next(-deviation, deviation + 1);
+        }
+    }
+}
+
+double GetAverageArrayColumn(int[,] ArrayToSeek, int ColumnToCalculate)
+{
+    double average = 0;
+    for (int i = 0; i < ArrayToSeek.GetLength(0); i++)
+    {
+        average = average + ArrayToSeek[i, ColumnToCalculate];
+    }
+    average = average / ArrayToSeek.GetLength(0);
+    return average;
+}
+
+int rowAmount = 0;
+int columnAmount = 0;
+
+(rowAmount, columnAmount) = GetArraySize();
+int[,] Array = new int[rowAmount, columnAmount];
+Fill2DArray(Array);
+Print2DArray(Array);
+Console.WriteLine();
+
+Console.Write("\t");
+for (int j = 0; j < Array.GetLength(1); j++)
+{
+    Console.Write($"{Math.Round(GetAverageArrayColumn(Array, j), 2)}\t");
+}
+Console.WriteLine(" <-- Средние значения по столбцам");
